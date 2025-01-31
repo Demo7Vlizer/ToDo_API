@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:new_poject/models/todo.model.dart';
 import 'package:new_poject/controllers/loading_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class TodoController extends GetxController {
   final loadingController = Get.put(LoadingController());
@@ -11,11 +12,18 @@ class TodoController extends GetxController {
   var CompletedList = RxList<TodoModel>();
   final String baseUrl =
       'https://679c68d087618946e65216b3.mockapi.io/api/todolist';
+  final selectedDate = DateTime.now().obs;
+  final datesWithTodos = <DateTime>{}.obs;  // Track dates that have todos
 
   @override
   void onInit() {
     super.onInit();
     getTodoList();
+  }
+
+  void updateSelectedDate(DateTime date) {
+    selectedDate.value = date;
+    getTodoList(); // Refresh list with selected date
   }
 
   // GET - Fetch all todos
@@ -27,13 +35,27 @@ class TodoController extends GetxController {
         var data = jsonDecode(response.body);
         TodoList.clear();
         CompletedList.clear();
+        datesWithTodos.clear();  // Clear existing dates
+
         for (Map<String, dynamic> index in data) {
           var todo = TodoModel.fromJson(index);
-          if (todo.isCompleted) {
-            CompletedList.add(todo);
-          } else {
-            TodoList.add(todo);
+          DateTime todoDate = DateTime(
+            todo.createdAt.year,
+            todo.createdAt.month,
+            todo.createdAt.day,
+          );
+
+          // Only add todos for selected date
+          if (isSameDay(todoDate, selectedDate.value)) {
+            if (todo.isCompleted) {
+              CompletedList.add(todo);
+            } else {
+              TodoList.add(todo);
+            }
           }
+          
+          // Track dates with todos
+          datesWithTodos.add(todoDate);
         }
         update(); // Trigger UI update
       }
