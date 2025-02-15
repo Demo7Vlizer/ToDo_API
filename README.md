@@ -15,7 +15,7 @@
   <img src="assets/Samples/TODO_API.gif" alt="App Demo" width="300"/>
 </p>
 
-<h2 align="center">🌟 A Modern Todo App with Beautiful UI and Powerful Features 🌟</h2>
+<h2 align="center">🌟 A Modern Todo App with Beautiful UI...🌟</h2>
 
 <p align="center">
   <b>Built with Flutter and GetX, featuring a stunning UI, smooth animations, and powerful task management capabilities.</b>
@@ -78,7 +78,7 @@
       </td>
       <td align="center">
         <img src="assets/Samples/image5.png" width="200" alt="Calendar View"/><br/>
-        <b>Calendar View</b>
+        <b>File Structure..</b>
       </td>
     </tr>
   </table>
